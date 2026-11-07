@@ -3,6 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,6 +20,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+
+      - name: Create debug keystore
+        run: keytool -genkeypair -keystore debug.keystore -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
